@@ -46,7 +46,7 @@ def init(X: np.ndarray, K: int,
 
 
 def plot(X: np.ndarray, mixture: GaussianMixture, post: np.ndarray,
-         title: str):
+         title: str, img_name: str):
     """Plots the mixture model for 2D data"""
     _, K = post.shape
 
@@ -79,8 +79,10 @@ def plot(X: np.ndarray, mixture: GaussianMixture, post: np.ndarray,
             mu[0], mu[1], sigma)
         ax.text(mu[0], mu[1], legend)
     plt.axis('equal')
-    plt.show()
 
+    # plt.savefig(img_name)
+    # plt.show()
+    plt.close()
 
 def rmse(X, Y):
     return np.sqrt(np.mean((X - Y)**2))
@@ -98,4 +100,8 @@ def bic(X: np.ndarray, mixture: GaussianMixture,
     Returns:
         float: the BIC for this mixture
     """
-    raise NotImplementedError
+    n = X.shape[0]
+    d = X.shape[1]
+    k = mixture.p.shape[0]
+    bic = log_likelihood - 1/2*((d + 2) * k - 1) * np.log(n)
+    return bic
